@@ -336,16 +336,16 @@ impl MatrixMultiplicationRef {
             );
         }
     }
-    fn batch_start(&self) -> NSUInteger {
+    pub fn batch_start(&self) -> NSUInteger {
         unsafe { msg_send!(*self, batchStart) }
     }
-    fn set_batch_start(&self, batchStart: NSUInteger) {
+    pub fn set_batch_start(&self, batchStart: NSUInteger) {
         unsafe { msg_send!(* self , setBatchStart : batchStart) }
     }
-    fn batch_size(&self) -> NSUInteger {
+    pub fn batch_size(&self) -> NSUInteger {
         unsafe { msg_send!(*self, batchSize) }
     }
-    fn set_batch_size(&self, batchSize: NSUInteger) {
+    pub fn set_batch_size(&self, batchSize: NSUInteger) {
         unsafe { msg_send!(* self , setBatchSize : batchSize) }
     }
 }
