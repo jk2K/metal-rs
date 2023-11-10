@@ -261,8 +261,8 @@ impl MatrixMultiplication {
         result_rows: NSUInteger,
         result_columns: NSUInteger,
         interior_columns: NSUInteger,
-        alpha: f32,
-        beta: f32,
+        alpha: f64,
+        beta: f64,
     ) -> Option<Self> {
         assert!(result_rows > 0);
         assert!(result_columns > 0);
