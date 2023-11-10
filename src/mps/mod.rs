@@ -49,18 +49,18 @@ pub trait MPSDataType: Clone + Copy + PartialEq + Eq + Debug + Hash {
 }
 
 /// A common bit for all floating point data types. Zero for integer types
-const MPS_FLOATBIT_ENCODING: u32 = 0x10000000;
+pub const MPS_FLOATBIT_ENCODING: u32 = 0x10000000;
 /// A common bit for all complex point data types. Zero for integer types
-const MPS_COMPLEXBIT_ENCODING: u32 = MPS_FLOATBIT_ENCODING | 0x01000000;
+pub const MPS_COMPLEXBIT_ENCODING: u32 = MPS_FLOATBIT_ENCODING | 0x01000000;
 /// A common bit for all signed data types
-const MPS_SIGNEDBIT_ENCODING: u32 = 0x20000000;
+pub const MPS_SIGNEDBIT_ENCODING: u32 = 0x20000000;
 /// A common bit for all alternate encoding data types
-const MPS_ALTERNATE_ENCODING: u32 = 0x80000000;
+pub const MPS_ALTERNATE_ENCODING: u32 = 0x80000000;
 /// A common bit for all normalized data types.
 /// If set, the value of the shall be interpreted as value / UNORM_TYPE_MAX
 /// Normalized values have range [0, 1.0] if unsigned and [-1,1] if signed.
 /// SNORM_TYPE_MIN is interpreted as SNORM_TYPE_MIN+1 per standard Metal rules.
-const MPS_NORMALIZEDBIT_ENCODING: u32 = 0x40000000;
+pub const MPS_NORMALIZEDBIT_ENCODING: u32 = 0x40000000;
 
 macro_rules! mps_datatype_impl {
     ($dt:ident, $dt_ty:ty, $type_id:expr, $from_f64:expr, $to_f64:expr) => {
