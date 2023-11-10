@@ -409,8 +409,8 @@ pub fn encode_gemm<A, B, C>(
     m: NSUInteger,
     n: NSUInteger,
     k: NSUInteger,
-    alpha: f32,
-    beta: f32,
+    alpha: f64,
+    beta: f64,
     batch_size: Option<NSUInteger>,
 ) -> Result<(), String>
 where
@@ -469,7 +469,7 @@ where
     Ok(())
 }
 
-fn is_simple_gemm(transpose_left: bool, transpose_right: bool, alpha: f32, beta: f32) -> bool {
+fn is_simple_gemm(transpose_left: bool, transpose_right: bool, alpha: f64, beta: f64) -> bool {
     !transpose_left && !transpose_right && alpha == 1.0 && beta == 0.0
 }
 
@@ -481,8 +481,8 @@ pub fn encode_gemm_mbuffers<A, B, C>(
     a: &MatrixBuffer<A>,
     b: &MatrixBuffer<B>,
     c: &mut MatrixBuffer<C>,
-    alpha: f32,
-    beta: f32,
+    alpha: f64,
+    beta: f64,
     batch_size: Option<NSUInteger>,
 ) -> Result<(), String>
 where
@@ -667,6 +667,7 @@ mod tests {
                 &mut c,
                 1.0,
                 0.0,
+                None,
             )
             .expect("Encoding failed");
             command_buffer.commit();
