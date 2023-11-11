@@ -173,6 +173,7 @@ impl Matrix {
 
     pub fn init_with_buffer_descriptor(
         buffer: &BufferRef,
+        offset: NSUInteger,
         descriptor: &MatrixDescriptorRef,
     ) -> Option<Self> {
         unsafe {
@@ -180,6 +181,7 @@ impl Matrix {
             let ptr: *mut Object = msg_send![
                 matrix.as_ref(),
                 initWithBuffer : buffer
+                        offset : offset
                      descriptor: descriptor
             ];
             // Increase the reference count for Drop to not double free.
@@ -430,11 +432,11 @@ where
     let result_descriptor = MatrixDescriptor::init_single(m, n, n * C::SIZE, C::TYPE_ID);
 
     // Create matrix objects
-    let left_matrix = Matrix::init_with_buffer_descriptor(&a, &left_descriptor)
+    let left_matrix = Matrix::init_with_buffer_descriptor(&a, 0, &left_descriptor)
         .ok_or_else(|| "Failed to create left matrix")?;
-    let right_matrix = Matrix::init_with_buffer_descriptor(&b, &right_descriptor)
+    let right_matrix = Matrix::init_with_buffer_descriptor(&b, 0, &right_descriptor)
         .ok_or_else(|| "Failed to create right matrix")?;
-    let result_matrix = Matrix::init_with_buffer_descriptor(&c, &result_descriptor)
+    let result_matrix = Matrix::init_with_buffer_descriptor(&c, 0, &result_descriptor)
         .ok_or_else(|| "Failed to create result matrix")?;
 
     // Create kernel
