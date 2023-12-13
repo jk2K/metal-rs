@@ -155,7 +155,7 @@ impl RayIntersectorRef {
         unsafe { msg_send![self, setRayDataType: ty] }
     }
 
-    pub fn set_ray_index_data_type<T: MPSDataType>(&self, ty: T) {
+    pub fn set_ray_index_data_type(&self, ty: MPSDataType) {
         unsafe { msg_send![self, setRayIndexDataType: ty] }
     }
 
@@ -298,8 +298,8 @@ impl PolygonAccelerationStructureRef {
         unsafe { msg_send![self, setIndexBufferOffset: offset] }
     }
 
-    pub fn set_index_type<T: MPSDataType>(&self, _data_type: T) {
-        unsafe { msg_send![self, setIndexType: T::TYPE_ID] }
+    pub fn set_index_type(&self, _data_type: MPSDataType) {
+        unsafe { msg_send![self, setIndexType: _data_type] }
     }
 
     pub fn set_mask_buffer(&self, buffer: Option<&BufferRef>) {

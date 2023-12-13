@@ -157,7 +157,7 @@ fn performance() {
 
 fn generate_matrix<T, const ROWS: u64, const COLS: u64>(device: &Device) -> MatrixBuffer<T>
 where
-    T: MPSDataType,
+    T: MPSDataTypeTrait,
     GEMMInput<T>: Valid,
 {
     let mut rng = thread_rng();
@@ -177,7 +177,7 @@ where
 }
 
 // Naive matrix multiplication for testing
-fn matrix_mul<T: MPSDataType>(
+fn matrix_mul<T: MPSDataTypeTrait>(
     a: Vec<T::Type>,
     b: Vec<T::Type>,
     m: usize,

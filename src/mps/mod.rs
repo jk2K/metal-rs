@@ -36,7 +36,7 @@ foreign_obj_type! {
 /// A value to specify a type of data.
 ///
 /// See <https://developer.apple.com/documentation/metalperformanceshaders/mpsdatatype?language=objc>.
-pub trait MPSDataType: Clone + Copy + PartialEq + Eq + Debug + Hash {
+pub trait MPSDataTypeTrait: Clone + Copy + PartialEq + Eq + Debug + Hash {
     type Type: Default + Clone + Copy + PartialEq + Debug + Sized;
     const TYPE_ID: u32;
 
@@ -46,6 +46,29 @@ pub trait MPSDataType: Clone + Copy + PartialEq + Eq + Debug + Hash {
     fn from_f64(v: f64) -> Self::Type;
 
     fn to_f64(v: Self::Type) -> f64;
+}
+
+/// See <https://developer.apple.com/documentation/metalperformanceshaders/mpsdatatype>
+#[repr(u32)]
+pub enum MPSDataType {
+    Invalid = 0,
+
+    Float32 = MPS_FLOATBIT_ENCODING | 32,
+    Float16 = MPS_FLOATBIT_ENCODING | 16,
+
+    // Signed integers.
+    Int8 = MPS_SIGNEDBIT_ENCODING | 8,
+    Int16 = MPS_SIGNEDBIT_ENCODING | 16,
+    Int32 = MPS_SIGNEDBIT_ENCODING | 32,
+
+    // Unsigned integers. Range: [0, UTYPE_MAX]
+    UInt8 = 8,
+    UInt16 = 16,
+    UInt32 = 32,
+
+    // Unsigned normalized. Range: [0, 1.0]
+    Unorm1 = MPS_NORMALIZEDBIT_ENCODING | 1,
+    Unorm8 = MPS_NORMALIZEDBIT_ENCODING | 8,
 }
 
 /// A common bit for all floating point data types. Zero for integer types
@@ -64,7 +87,7 @@ pub const MPS_NORMALIZEDBIT_ENCODING: u32 = 0x40000000;
 
 macro_rules! mps_datatype_impl {
     ($dt:ident, $dt_ty:ty, $type_id:expr, $from_f64:expr, $to_f64:expr) => {
-        impl MPSDataType for $dt {
+        impl MPSDataTypeTrait for $dt {
             type Type = $dt_ty;
             const TYPE_ID: u32 = $type_id;
 
