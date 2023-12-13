@@ -298,8 +298,8 @@ impl PolygonAccelerationStructureRef {
         unsafe { msg_send![self, setIndexBufferOffset: offset] }
     }
 
-    pub fn set_index_type(&self, _data_type: MPSDataType) {
-        unsafe { msg_send![self, setIndexType: _data_type] }
+    pub fn set_index_type(&self, data_type: MPSDataType) {
+        unsafe { msg_send![self, setIndexType: data_type] }
     }
 
     pub fn set_mask_buffer(&self, buffer: Option<&BufferRef>) {
