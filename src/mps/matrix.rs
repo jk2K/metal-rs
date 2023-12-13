@@ -4,7 +4,7 @@ use super::*;
 pub trait Valid {}
 
 /// Helper struct used to indicate a valid matrix multiplication input type.
-pub struct GEMMInput<T: MPSDataType> {
+pub struct GEMMInput<T: MPSDataTypeTrait> {
     _marker: PhantomData<T>,
 }
 
@@ -19,7 +19,7 @@ impl Valid for GEMMInput<Int8> {}
 impl Valid for GEMMInput<Int16> {}
 
 /// Helper struct used to indicate a valid matrix multiplication result type.
-pub struct GEMMResult<T: MPSDataType> {
+pub struct GEMMResult<T: MPSDataTypeTrait> {
     _marker: PhantomData<T>,
 }
 
@@ -31,9 +31,9 @@ impl Valid for GEMMResult<Float32> {}
 /// Helper struct used to indicate valid matrix multiplication types.
 pub struct GEMMSpecification<A, B, C>
 where
-    A: MPSDataType,
-    B: MPSDataType,
-    C: MPSDataType,
+    A: MPSDataTypeTrait,
+    B: MPSDataTypeTrait,
+    C: MPSDataTypeTrait,
     GEMMInput<A>: Valid,
     GEMMInput<B>: Valid,
     GEMMResult<C>: Valid,
@@ -47,7 +47,7 @@ impl Valid for GEMMSpecification<Float32, Float16, Float32> {}
 /// All valid input types can produce a MPSDataTypeFloat32 result.
 impl<T> Valid for GEMMSpecification<T, T, Float32>
 where
-    T: MPSDataType,
+    T: MPSDataTypeTrait,
     GEMMInput<T>: Valid,
 {
 }
@@ -127,7 +127,7 @@ foreign_obj_type! {
     type ParentType = NsObject;
 }
 
-impl<T: MPSDataType> Display for MatrixBuffer<T> {
+impl<T: MPSDataTypeTrait> Display for MatrixBuffer<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let contents = self.contents();
         assert_eq!(contents.len(), self.rows as usize * self.columns as usize);
@@ -361,7 +361,7 @@ pub struct MatrixBuffer<T> {
     _marker: PhantomData<T>,
 }
 
-impl<T: MPSDataType> MatrixBuffer<T> {
+impl<T: MPSDataTypeTrait> MatrixBuffer<T> {
     pub fn new(
         device: &DeviceRef,
         rows: NSUInteger,
@@ -416,9 +416,9 @@ pub fn encode_gemm<A, B, C>(
     batch_size: Option<NSUInteger>,
 ) -> Result<(), String>
 where
-    A: MPSDataType,
-    B: MPSDataType,
-    C: MPSDataType,
+    A: MPSDataTypeTrait,
+    B: MPSDataTypeTrait,
+    C: MPSDataTypeTrait,
     GEMMInput<A>: Valid,
     GEMMInput<B>: Valid,
     GEMMResult<C>: Valid,
@@ -488,9 +488,9 @@ pub fn encode_gemm_mbuffers<A, B, C>(
     batch_size: Option<NSUInteger>,
 ) -> Result<(), String>
 where
-    A: MPSDataType,
-    B: MPSDataType,
-    C: MPSDataType,
+    A: MPSDataTypeTrait,
+    B: MPSDataTypeTrait,
+    C: MPSDataTypeTrait,
     GEMMInput<A>: Valid,
     GEMMInput<B>: Valid,
     GEMMResult<C>: Valid,
@@ -543,7 +543,7 @@ mod tests {
     use rand::{thread_rng, Rng};
     use std::ops::{AddAssign, Mul};
     // Naive matrix multiplication for testing
-    fn matrix_mul<T: MPSDataType>(
+    fn matrix_mul<T: MPSDataTypeTrait>(
         a: Vec<T::Type>,
         b: Vec<T::Type>,
         m: usize,
@@ -607,7 +607,7 @@ mod tests {
 
     fn generate_matrix<T, const ROWS: u64, const COLS: u64>(device: &Device) -> MatrixBuffer<T>
     where
-        T: MPSDataType,
+        T: MPSDataTypeTrait,
         GEMMInput<T>: Valid,
     {
         let mut rng = thread_rng();

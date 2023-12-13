@@ -68,7 +68,7 @@ fn main() {
     acceleration_structure.set_vertex_buffer(Some(&vertex_buffer));
     acceleration_structure.set_vertex_stride(vertex_stride as u64);
     acceleration_structure.set_index_buffer(Some(&index_buffer));
-    acceleration_structure.set_index_type(mps::UInt32);
+    acceleration_structure.set_index_type(mps::MPSDataType::UInt32);
     acceleration_structure.set_triangle_count(1);
     acceleration_structure.set_usage(MPSAccelerationStructureUsage::None);
     acceleration_structure.rebuild();
